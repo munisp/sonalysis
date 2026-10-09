@@ -1,0 +1,23 @@
+{
+  "transaction": {
+    "transaction_id": "tx-demo-001",
+    "tenant_id": "tenant-ng-1",
+    "amount": 185000,
+    "currency": "NGN",
+    "merchant_id": "merchant-42",
+    "merchant_category": "electronics",
+    "customer_id": "customer-9",
+    "device_id": "device-new-1",
+    "channel": "pos",
+    "country": "NG",
+    "timestamp": "2026-10-09T21:15:00Z",
+    "account_age_days": 12,
+    "is_new_device": true,
+    "failed_auth_count_24h": 3,
+    "velocity_1h": 12,
+    "prior_chargebacks": 1,
+    "graph_degree": 15,
+    "graph_fraud_neighbor_rate": 0.65
+  },
+  "explain": true
+}

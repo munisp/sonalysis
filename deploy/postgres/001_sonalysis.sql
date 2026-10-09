@@ -1,0 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE IF NOT EXISTS transactions (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), tenant_id text NOT NULL, transaction_id text NOT NULL, payload jsonb NOT NULL, occurred_at timestamptz NOT NULL, UNIQUE(tenant_id,transaction_id));
+CREATE TABLE IF NOT EXISTS labels (tenant_id text NOT NULL, transaction_id text NOT NULL, is_fraud boolean NOT NULL, source text NOT NULL, labeled_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(tenant_id,transaction_id));
+CREATE TABLE IF NOT EXISTS predictions (id bigserial PRIMARY KEY, tenant_id text NOT NULL, transaction_id text NOT NULL, model_version text NOT NULL, probability double precision NOT NULL, decision text NOT NULL, latency_ms double precision NOT NULL, scored_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS model_registry (version text PRIMARY KEY, model_type text NOT NULL, artifact_uri text NOT NULL, metrics jsonb NOT NULL, status text NOT NULL CHECK(status IN ('candidate','staging','production','rejected')), created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS drift_windows (tenant_id text NOT NULL, feature text NOT NULL, window_start timestamptz NOT NULL, sample_count bigint NOT NULL, mean double precision, psi double precision, PRIMARY KEY(tenant_id,feature,window_start));
+CREATE INDEX IF NOT EXISTS transactions_tenant_time ON transactions(tenant_id,occurred_at DESC); CREATE INDEX IF NOT EXISTS predictions_tenant_time ON predictions(tenant_id,scored_at DESC);
